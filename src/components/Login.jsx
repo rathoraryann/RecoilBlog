@@ -12,7 +12,6 @@ function Login() {
     const [error, setError] = useState(null);
 
     const login = async (data) => {
-        console.log(data)
         setError("");
         try {
             const session = authService.login(data);

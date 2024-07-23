@@ -4,7 +4,7 @@ import { Client, ID, Databases, Storage, Query } from 'appwrite';
 export class Service {
     client = new Client();
     databases;
-    storage;
+    bucket;
 
     constructor() {
         this.client
@@ -14,7 +14,7 @@ export class Service {
         this.bucket = new Storage(this.client)
     }
 
-    async createPost({ title, content, slug, featuredImage, status }) {
+    async createPost({ title, content, slug, featuredImage, status, userId}) {
         try {
             return await this.databases.createDocument(conf.appwriteDatabaseId, conf.appwriteCollectionId, slug, { title, content, featuredImage, status, userId })
         } catch (error) {
@@ -41,7 +41,7 @@ export class Service {
         }
     }
 
-    async getPost({ slug }) {
+    async getPost(slug) {
         try {
             return await this.databases.getDocument(
                 conf.appwriteDatabaseId,
@@ -59,11 +59,9 @@ export class Service {
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 queries,
-
-
             )
         } catch (error) {
-            console.log("Appwrite serive :: getPosts :: error", error);
+            console.log("Appwrite service :: getPosts :: error", error);
             return false
         }
     }
@@ -97,11 +95,11 @@ export class Service {
         }
     }
 
-    async getFilePreview() {
+    getFilePreview(fileId) {
         try {
-            return await this.bucket(
+            return this.bucket.getFilePreview(
                 conf.appwriteBucketId,
-                "preview.png"
+                fileId
             )
         } catch (error) {
             console.log("error", error)

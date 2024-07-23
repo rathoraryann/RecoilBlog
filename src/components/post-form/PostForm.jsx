@@ -13,7 +13,7 @@ function PostForm({ post }) {
         defaultValues: {
             title: post?.title || '',
             slug: post?.slug || '',
-            content: post?.slug || '',
+            content: post?.content || '',
             status: post?.status || 'active',
         }
     })
@@ -53,15 +53,15 @@ function PostForm({ post }) {
     }
 
     const slugTransform = useCallback((value) => {
-        if (value && typeof value === 'string')
+        if (value && typeof value === "string")
             return value
                 .trim()
                 .toLowerCase()
-                .replace(/^[a-zA-Z\d\s]+/g, '-')
-                .replace(/\s/g, '-')
-        return ''
+                .replace(/[^a-zA-Z\d\s]+/g, "-")
+                .replace(/\s/g, "-");
 
-    })
+        return "";
+    }, []);
 
     useEffect(() => {
         const subscription = watch((value, { name }) => {
@@ -105,7 +105,7 @@ function PostForm({ post }) {
                 {post && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
+                            src={service.getFilePreview(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />

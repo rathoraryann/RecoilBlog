@@ -22,7 +22,7 @@ export class AuthService {
                 return userAccount
             }
         } catch (error) {
-            console(error)
+            throw error;
         }
     }
 
